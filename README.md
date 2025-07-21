@@ -3,60 +3,97 @@ A simple and beginner-friendly To-Do List application built using Python. This p
 tasks = []
 
 def show_menu():
-    print("\n===== TO-DO LIST MENU =====")
-    print("1. Show Tasks")
+    print("\n====== TO-DO LIST MENU ======")
+    print("1. View Tasks")
     print("2. Add Task")
-    print("3. Mark Task as Done")
-    print("4. Exit")
+    print("3. Update Task")
+    print("4. Mark Task as Completed")
+    print("5. Delete Task")
+    print("6. Exit")
 
-def show_tasks():
+def view_tasks():
     if not tasks:
-        print("📭 No tasks available.")
+        print(" No tasks available.")
     else:
-        print("\n📝 Your Tasks:")
-        for i, task in enumerate(tasks):
-            status = "✅" if task["done"] else "❌"
-            print(f"{i + 1}. {status} {task['title']}")
+        print("\n Your Tasks:")
+        for i, task in enumerate(tasks, start=1):
+            status =  if task["completed"] else
+            print(f"{i}. {status} {task['title']}")
 
 def add_task():
-    title = input("Enter task: ").strip()
+    title = input("Enter new task: ").strip()
     if title:
-        tasks.append({"title": title, "done": False})
-        print("✅ Task added!")
+        tasks.append({"title": title, "completed": False})
+        print(" Task added.")
     else:
-        print("⚠️ Task cannot be empty.")
+        print(" Task cannot be empty.")
 
-def mark_done():
-    show_tasks()
+def update_task():
+    view_tasks()
     if not tasks:
         return
     try:
-        task_num = int(input("Enter task number to mark as done: "))
-        if 1 <= task_num <= len(tasks):
-            tasks[task_num - 1]["done"] = True
-            print("✅ Task marked as done.")
+        num = int(input("Enter task number to update: "))
+        if 1 <= num <= len(tasks):
+            new_title = input("Enter new task title: ").strip()
+            if new_title:
+                tasks[num - 1]["title"] = new_title
+                print(" Task updated.")
+            else:
+                print(" Task title cannot be empty.")
         else:
-            print("❌ Invalid task number.")
+            print(" Invalid task number.")
     except ValueError:
-        print("⚠️ Please enter a valid number.")
+        print(" Please enter a valid number.")
+
+def complete_task():
+    view_tasks()
+    if not tasks:
+        return
+    try:
+        num = int(input("Enter task number to mark as completed: "))
+        if 1 <= num <= len(tasks):
+            tasks[num - 1]["completed"] = True
+            print(" Task marked as completed.")
+        else:
+            print(" Invalid task number.")
+    except ValueError:
+        print(" Please enter a valid number.")
+
+def delete_task():
+    view_tasks()
+    if not tasks:
+        return
+    try:
+        num = int(input("Enter task number to delete: "))
+        if 1 <= num <= len(tasks):
+            removed = tasks.pop(num - 1)
+            print(f" Deleted task: {removed['title']}")
+        else:
+            print(" Invalid task number.")
+    except ValueError:
+        print(" Please enter a valid number.")
 
 def main():
     while True:
         show_menu()
-        choice = input("Choose an option (1-4): ").strip()
+        choice = input("Choose an option (1-6): ").strip()
 
         if choice == '1':
-            show_tasks()
+            view_tasks()
         elif choice == '2':
             add_task()
         elif choice == '3':
-            mark_done()
+            update_task()
         elif choice == '4':
-            print("👋 Goodbye! See you later.")
+            complete_task()
+        elif choice == '5':
+            delete_task()
+        elif choice == '6':
+            print(" Exiting To-Do List. Goodbye!")
             break
         else:
-            print("⚠️ Invalid choice. Please select 1 to 4.")
+            print(" Invalid choice. Please enter a number between 1 and 6.")
 
 if __name__ == "__main__":
     main()
-
